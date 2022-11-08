@@ -1,3 +1,7 @@
+# PostgreSQL auth
+.my_pgpass
+.pg_service.conf
+
 # Django #
 *.log
 *.pot
