@@ -1,9 +1,70 @@
 [project]
 name = "drilltracker"
 version = "0.1.0"
-description = "Add your description here"
+description = "Add your description here"  # TODO
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "django>=5.2",
+    "django==5.2",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "django-stubs[compatible-mypy]>=5.2.0",
+    "isort>=6.0.1",
+    "mypy>=1.15.0",
+    "pytest==8.3.5",
+    "ruff>=0.11.9",
+]
+
+[tool.black]
+extend-exclude = 'env|.env|venv|.venv'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+skip_glob = ["*/*/migrations"]
+
+[tool.mypy]
+disallow_untyped_defs = true
+exclude = [
+    ".*/migrations/.*",
+]
+plugins = ["mypy_django_plugin.main"]
+
+[[tool.mypy.overrides]]
+module = '*.*'
+ignore_missing_imports = true
+check_untyped_defs = true
+disable_error_code = "ignore-without-code"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "drill_tracker.application.settings"
+addopts = "--reuse-db"  # TODO not recognised by pytest, maybe need a plugin
+asyncio_default_fixture_loop_scope = "session"
+
+[tool.ruff]
+lint.select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "I001", # isort
+    "N",  #  pep8-naming
+    "W292",  # no newline at end of file
+]
+lint.ignore = [
+    "E501",  # line too long, handled by black
+    "N802",  # function name should be lowercase
+    "N806",  # variable name should be lowercase
+]
+lint.unfixable = [
+    "F401",  # module imported but unused
+]
+fix = true
+
+extend-exclude = [
+    "*/migrations/*",
 ]
